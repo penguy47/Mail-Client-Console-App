@@ -16,23 +16,21 @@ public class SMTPClient {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         // First res from server
-        System.out.println("[SMTPClient]: " + reader.readLine());
+        System.out.println("[SMTPClient-test]: " + reader.readLine());
     }
 
     public void connect() throws IOException {
-        sendCommand("HELO" + host);
+        sendCommand("HELO " + host);
     }
 
-    public void auth(String username, String password) throws IOException {
-        sendCommand("AUTH LOGIN");
-        sendCommand(username+"\n");
-        sendCommand(password+"\n");
-    }
-
-    private void sendCommand(String command) throws IOException {
+    public void sendCommand(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
-        System.out.println(reader.readLine());
+        System.out.println("[Server]: " + reader.readLine());
+    }
+
+    public void sendLine(String command) throws IOException {
+        writer.write(command);
     }
 
     public void disconnect() throws IOException {

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +73,38 @@ public class Mail {
 
     public void addAttachment(Attachment attachment) {
         this.attachments.add(attachment);
+    }
+
+    public String getHeaderString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("From: ").append(from + "\r\n")
+                    .append("To: " + EmailFormatter.formatToHeader(to).toString()+"\r\n")
+                    .append("Cc: "+ EmailFormatter.formatToHeader(cc).toString()+"\r\n")
+                    .append("Bcc: "+ EmailFormatter.formatToHeader(bcc).toString()+"\r\n")
+                    .append("Subject: " + subject +".\r\n");
+        return builder.toString();
+    }
+
+    public String getBodyString() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Content-Type: multipart/mixed; boundary=\"boundary\"\r\n")
+                .append("--boundary\r\n")
+                .append(body + "\r\n\r\n");
+
+        for(Attachment attachment : attachments){
+            builder.append("--boundary_string\r\n")
+                .append("Content-Type: application/octet-stream\r\n")
+                .append("Content-Transfer-Encoding: base64\r\n")
+                .append("Content-Disposition: attachment; filename=\"" + attachment.getName()+"\"\r\n")
+                .append("\r\n")
+                .append(attachment.getBase64Encoded() + "\r\n")
+                .append("\r\n\r\n");
+        }
+
+        builder.append("--boundary_string--\r\n");
+
+        return builder.toString();
+
     }
 
     @Override

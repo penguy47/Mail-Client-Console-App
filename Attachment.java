@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 public class Attachment {
     private File file;
@@ -23,6 +26,13 @@ public class Attachment {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBase64Encoded() throws IOException {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] fileBytes = fis.readAllBytes();
+            return Base64.getEncoder().encodeToString(fileBytes);
+        }
     }
 
     @Override

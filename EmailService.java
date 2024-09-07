@@ -4,7 +4,17 @@ import connection.POP3Client;
 import connection.SMTPClient;
 
 public class EmailService {
+    private String smtpHost;
+    private String pop3Host;
+    private int smtpPort;
+    private int pop3Port;
+
     public EmailService(String smtpHost, int smtpPort, String pop3Host, int pop3Port){
+        this.smtpHost = smtpHost;
+        this.smtpPort = smtpPort;
+        this.pop3Host = pop3Host;
+        this.pop3Port = pop3Port;
+
         try {
             System.out.println("[Controller]: SMTP, POP3 connection testing...");
 
@@ -20,4 +30,38 @@ public class EmailService {
         }
     }
 
+    public void sendEmail(Mail mail){
+        try {
+            SMTPClient smtpClient = new SMTPClient(smtpHost, smtpPort);
+
+            smtpClient.connect();
+
+            smtpClient.sendCommand("MAIL FROM:<" + mail.getFrom() + ">");
+
+            for(String recipient : mail.getTo()){
+                smtpClient.sendCommand("RCPT TO:<"+recipient+">");
+            }
+
+            for(String recipient : mail.getCc()){
+                smtpClient.sendCommand("RCPT TO:<"+recipient+">");
+            }
+
+            for(String recipient : mail.getBcc()){
+                smtpClient.sendCommand("RCPT TO:<"+recipient+">");
+            }
+
+            smtpClient.sendCommand("DATA");
+
+            smtpClient.sendLine(mail.getHeaderString());
+
+            smtpClient.sendLine(mail.getBodyString());
+
+            smtpClient.sendCommand(".");
+
+            smtpClient.disconnect();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 }
