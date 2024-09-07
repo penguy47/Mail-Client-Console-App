@@ -95,7 +95,7 @@ public class Mail {
         result.add(body + "\r\n\r\n");
 
         for(Attachment attachment : attachments){
-            result.add("--boundary_string\r\n");
+            result.add("--boundary_attachment\r\n");
             result.add("Content-Type: application/octet-stream\r\n");
             result.add("Content-Transfer-Encoding: base64\r\n");
             result.add("Content-Disposition: attachment; filename=\"" + attachment.getName()+"\"\r\n");
@@ -107,7 +107,7 @@ public class Mail {
             result.add("\r\n");
         }
 
-        result.add("--boundary_string--\r\n");
+        result.add("--boundary--\r\n");
 
         return result;
 

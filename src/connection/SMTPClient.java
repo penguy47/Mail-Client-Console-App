@@ -16,7 +16,7 @@ public class SMTPClient {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         // First res from server
-        System.out.println("[SMTPClient-test]: " + reader.readLine());
+        System.out.println("[SMTPClient]: " + reader.readLine());
     }
 
     public void connect() throws IOException {

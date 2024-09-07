@@ -15,6 +15,11 @@ public class Attachment {
         this.name = file.getName();
     }
 
+    public Attachment(String name) { // Object with no source File
+        this.file = null;
+        this.name = name;
+    }
+
     public File getFile() {
         return file;
     }

@@ -13,16 +13,18 @@ public class POP3Client {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         // First res from server
-        System.out.println("[POP3Client-test]: " + reader.readLine());
+        System.out.println("[POP3Client]: " + reader.readLine());
     }
 
-    private void sendCommand(String command) throws IOException {
+    public void sendCommand(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
-        String response;
-        while ((response = reader.readLine()) != null && !response.equals(".")) {
-            System.out.println("[Server]: " + response);
-        }
+        System.out.println("[Server]: " + reader.readLine());
+    }
+
+    public String nextLine() throws IOException {
+        if(reader != null) return reader.readLine();
+        else return "";
     }
 
     public void disconnect() throws IOException {
