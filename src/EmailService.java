@@ -1,7 +1,9 @@
+package src;
 import java.io.IOException;
 
-import connection.POP3Client;
-import connection.SMTPClient;
+import src.connection.POP3Client;
+import src.connection.SMTPClient;
+import src.entity.Mail;
 
 public class EmailService {
     private String smtpHost;

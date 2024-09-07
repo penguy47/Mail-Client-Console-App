@@ -1,3 +1,6 @@
+package src;
+
+import src.entity.Mail;
 
 public class EmailController {
     EmailService emailService;

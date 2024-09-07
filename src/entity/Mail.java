@@ -1,6 +1,9 @@
+package src.entity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import src.utils.EmailFormatter;
 
 public class Mail {
     private String from;
