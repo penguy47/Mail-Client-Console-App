@@ -4,12 +4,17 @@ import connection.POP3Client;
 import connection.SMTPClient;
 
 public class EmailController {
-    private POP3Client pop3Client;
-    private SMTPClient smtpClient;
     EmailController(String smtpHost, int smtpPort, String pop3Host, int pop3Port){
         try {
-            smtpClient = new SMTPClient(smtpHost, smtpPort);
-            pop3Client = new POP3Client(pop3Host, pop3Port);
+            System.out.println("[Controller]: SMTP, POP3 connection testing...");
+
+            SMTPClient smtpClient = new SMTPClient(smtpHost, smtpPort);
+            POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
+
+            smtpClient.disconnect();
+            pop3Client.disconnect();
+
+            System.out.println("[Controller]: SMTP, POP3 connection test successful.");
         } catch (IOException e) {
             System.out.println("[Controller]: Cannot connect to protocols");
         }

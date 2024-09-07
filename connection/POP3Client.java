@@ -20,7 +20,7 @@ public class POP3Client {
         writer.write(command + "\r\n");
         writer.flush();
         String response;
-        while (!(response = reader.readLine()).equals(".")) {
+        while ((response = reader.readLine()) != null && !response.equals(".")) {
             System.out.println(response);
         }
     }
