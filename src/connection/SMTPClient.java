@@ -31,6 +31,7 @@ public class SMTPClient {
 
     public void sendLine(String command) throws IOException {
         writer.write(command);
+        writer.flush();
     }
 
     public void disconnect() throws IOException {

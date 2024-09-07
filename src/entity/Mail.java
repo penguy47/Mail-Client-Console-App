@@ -88,25 +88,28 @@ public class Mail {
         return builder.toString();
     }
 
-    public String getBodyString() throws IOException {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Content-Type: multipart/mixed; boundary=\"boundary\"\r\n")
-                .append("--boundary\r\n")
-                .append(body + "\r\n\r\n");
+    public List<String> getBodyLines() throws IOException {
+        List<String> result = new ArrayList<>(); 
+        result.add("Content-Type: multipart/mixed; boundary=\"boundary\"\r\n");
+        result.add("--boundary\r\n");
+        result.add(body + "\r\n\r\n");
 
         for(Attachment attachment : attachments){
-            builder.append("--boundary_string\r\n")
-                .append("Content-Type: application/octet-stream\r\n")
-                .append("Content-Transfer-Encoding: base64\r\n")
-                .append("Content-Disposition: attachment; filename=\"" + attachment.getName()+"\"\r\n")
-                .append("\r\n")
-                .append(attachment.getBase64Encoded() + "\r\n")
-                .append("\r\n\r\n");
+            result.add("--boundary_string\r\n");
+            result.add("Content-Type: application/octet-stream\r\n");
+            result.add("Content-Transfer-Encoding: base64\r\n");
+            result.add("Content-Disposition: attachment; filename=\"" + attachment.getName()+"\"\r\n");
+            result.add("\r\n");
+
+
+            result.addAll(attachment.getBase64Encoded());
+
+            result.add("\r\n");
         }
 
-        builder.append("--boundary_string--\r\n");
+        result.add("--boundary_string--\r\n");
 
-        return builder.toString();
+        return result;
 
     }
 

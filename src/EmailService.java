@@ -56,14 +56,16 @@ public class EmailService {
 
             smtpClient.sendLine(mail.getHeaderString());
 
-            smtpClient.sendLine(mail.getBodyString());
+            for(String line : mail.getBodyLines()) {
+                smtpClient.sendLine(line);
+            }
 
             smtpClient.sendCommand(".");
 
             smtpClient.disconnect();
 
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println(e.getMessage());
         }
     }
 }

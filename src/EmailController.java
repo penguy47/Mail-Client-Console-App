@@ -2,6 +2,10 @@ package src;
 
 import src.entity.Mail;
 
+import java.io.File;
+
+import src.entity.Attachment;
+
 public class EmailController {
     EmailService emailService;
     EmailController(String smtpHost, int smtpPort, String pop3Host, int pop3Port){
@@ -13,6 +17,10 @@ public class EmailController {
         mail.addTo("to2.com");
         mail.setSubject("send mail test 2");
         mail.setBody("1234567890123456789012345678901234567890");
+
+        //Attachment attachment = new Attachment(new File("heavyItem.jpg"));
+        Attachment attachment = new Attachment(new File("heavyItem.jpg"));
+        mail.addAttachment(attachment);
         
         emailService.sendEmail(mail);
     }
