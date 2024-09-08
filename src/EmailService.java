@@ -36,7 +36,7 @@ public class EmailService {
         }
     }
 
-    public void sendEmail(Mail mail){
+    public void sendMail(Mail mail){
         try {
             SMTPClient smtpClient = new SMTPClient(smtpHost, smtpPort);
 
@@ -166,4 +166,7 @@ public class EmailService {
         }
 
     }
+
+    
+    
 }

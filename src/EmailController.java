@@ -4,14 +4,23 @@ import src.entity.Mail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
+import src.config.Config;
 import src.connection.POP3Client;
 import src.entity.Attachment;
+import src.entity.Folder;
 
 public class EmailController {
     EmailService emailService;
-    EmailController(String smtpHost, int smtpPort, String pop3Host, int pop3Port){
-        emailService = new EmailService(smtpHost, smtpPort, pop3Host, pop3Port);
+    Config config;
+    List<Folder> folders;
+    
+    EmailController(Config config){
+        this.config = config;
+        createEmailService();
+        createFolders();
 
         // Mail result = emailService.retrieveMail("nigga.com","bruh", 1);
         // System.out.println(result.toString());
@@ -29,5 +38,25 @@ public class EmailController {
         // emailService.sendEmail(mail);
     }
 
+    private void createEmailService(){
+        emailService = new EmailService(
+            config.getServerConfig().getSmtpHost(),
+            config.getServerConfig().getSmtpPort(),
+            config.getServerConfig().getPop3Host(),
+            config.getServerConfig().getPop3Port()
+        );
+    }
+
+    private void createFolders(){
+        folders = new ArrayList<>();
+        // Default folders
+        folders.add(new Folder("Inbox"));
+        folders.add(new Folder("Project"));
+        folders.add(new Folder("Important"));
+        folders.add(new Folder("Work"));
+        folders.add(new Folder("Spam"));
+    }
+
     
+
 }
