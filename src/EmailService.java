@@ -30,7 +30,7 @@ public class EmailService {
             smtpClient.disconnect();
             pop3Client.disconnect();
 
-            System.out.println("[Controller]: SMTP, POP3 connection test successful.");
+            System.out.println("[Controller]: SMTP, POP3 is ready to use!");
         } catch (IOException e) {
             System.out.println("[Controller]: Cannot connect to protocols");
         }

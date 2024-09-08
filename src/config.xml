@@ -1,0 +1,33 @@
+<config>
+    <client>
+        <username>root</username>
+        <password>password</password>
+        <email>email</email>
+        <autoLoad>10</autoLoad>
+    </client>
+    <server>
+        <smtphost>127.0.0.1</smtphost>
+        <pop3host>127.0.0.1</pop3host>
+        <ports>
+            <smtp>2225</smtp>
+            <pop3>3335</pop3>
+        </ports>
+    </server>
+    <filters>
+        <filter>
+            <type>from</type>
+            <info>abc@gmail.com</info>
+            <folder>Project</folder>
+        </filter>
+        <filter>
+            <type>subject</type>
+            <info>anhlan, jhin69</info>
+            <folder>Project</folder>
+        </filter>
+        <filter>
+            <type>spam</type>
+            <info>nigga, hack, hitler</info>
+            <folder>Project</folder>
+        </filter>
+    </filters>
+</config>

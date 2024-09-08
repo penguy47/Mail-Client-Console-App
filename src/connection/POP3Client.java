@@ -19,7 +19,9 @@ public class POP3Client {
     public void sendCommand(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
-        System.out.println("[Server]: " + reader.readLine());
+
+        reader.readLine();
+        //System.out.println("[Server]: " + reader.readLine());
     }
 
     public String nextLine() throws IOException {

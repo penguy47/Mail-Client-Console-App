@@ -26,7 +26,9 @@ public class SMTPClient {
     public void sendCommand(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
-        System.out.println("[Server]: " + reader.readLine());
+        
+        reader.readLine();
+        //System.out.println("[Server]: " + reader.readLine());
     }
 
     public void sendLine(String command) throws IOException {
