@@ -8,6 +8,7 @@ import src.connection.POP3Client;
 import src.connection.SMTPClient;
 import src.entity.Attachment;
 import src.entity.Mail;
+import src.entity.User;
 
 public class EmailService {
     private String smtpHost;
@@ -34,6 +35,22 @@ public class EmailService {
         } catch (IOException e) {
             System.out.println("[Controller]: Cannot connect to protocols");
         }
+    }
+
+    public int getMailsCount(String email, String encodedPassword){
+        try {
+            POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
+            pop3Client.sendCommand("USER "+ email);
+            pop3Client.sendCommand("PASS " + encodedPassword);
+            String line = pop3Client.sendCommand("STAT");
+            
+            String[] elements = line.split(" ");
+            pop3Client.disconnect();
+            return Integer.parseInt(elements[1]);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 
     public void sendMail(Mail mail){
@@ -73,15 +90,37 @@ public class EmailService {
         }
     }
 
-    public Mail retrieveMail(String username, String encodedPassword, int index) { // this server has no auth
+    private String getMailId(String email, String encodedPassword, int index){
+        String id = "";
+        try {
+            POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
+            pop3Client.sendCommand("USER "+ email);
+            pop3Client.sendCommand("PASS " + encodedPassword);
+            pop3Client.sendCommand("UIDL");
+            String line = "";
+            for(int i=0;i<index-1;i++){
+                pop3Client.nextLine();
+            }
+            line = pop3Client.nextLine();
+            id = line.substring(
+                line.indexOf(" ")
+            ).trim().substring(0, line.length()-6);
+            pop3Client.disconnect();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+
+    public Mail retrieveMail(String email, String encodedPassword, int index) { // this server has no auth
         Mail mail = new Mail();
         boolean bBody = false;
         try {
             POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
-            pop3Client.sendCommand("USER "+username);
+            pop3Client.sendCommand("USER "+ email);
             pop3Client.sendCommand("PASS " + encodedPassword);
             pop3Client.sendCommand("RETR "+index);
-
+            mail.setId(getMailId(email,encodedPassword,index));
             String line = null;
             while((line = pop3Client.nextLine())!="."){
                 if(line.startsWith("From: ")){
@@ -89,15 +128,15 @@ public class EmailService {
                 } else if(line.startsWith("To: ")){
                     String toEmails = line.substring(4).trim();
                     String[] emails = toEmails.split(",");
-                    for(String email : emails) mail.addTo(email.trim());
+                    for(String _email : emails) mail.addTo(_email.trim());
                 } else if(line.startsWith("Cc: ")){
                     String ccEmails = line.substring(4).trim();
                     String[] emails = ccEmails.split(",");
-                    for(String email : emails) mail.addCc(email.trim());
+                    for(String _email : emails) mail.addCc(_email.trim());
                 } else if(line.startsWith("Bcc: ")){
                     String bccEmails = line.substring(5).trim();
                     String[] emails = bccEmails.split(",");
-                    for(String email : emails) mail.addBcc(email.trim());
+                    for(String _email : emails) mail.addBcc(_email.trim());
                 } else if(line.startsWith("Subject: ")) {
                     mail.setSubject(line.substring(8).trim());
                 } else if(line.startsWith("--boundary--")){
@@ -127,11 +166,11 @@ public class EmailService {
         return mail;
     }
 
-    public void downloadAttachments(String username, String encodedPassword, int index, String desPath){
+    public void downloadAttachments(String email, String encodedPassword, int index, String desPath){
         try {
             String line;
             POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
-            pop3Client.sendCommand("USER "+username);
+            pop3Client.sendCommand("USER "+email);
             pop3Client.sendCommand("PASS " + encodedPassword);
             pop3Client.sendCommand("RETR "+index);
 
@@ -166,7 +205,5 @@ public class EmailService {
         }
 
     }
-
-    
     
 }

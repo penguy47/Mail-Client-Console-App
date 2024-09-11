@@ -16,11 +16,11 @@ public class POP3Client {
         System.out.println("[POP3Client]: " + reader.readLine());
     }
 
-    public void sendCommand(String command) throws IOException {
+    public String sendCommand(String command) throws IOException {
         writer.write(command + "\r\n");
         writer.flush();
 
-        reader.readLine();
+        return reader.readLine();
         //System.out.println("[Server]: " + reader.readLine());
     }
 

@@ -1,8 +1,8 @@
 <config>
     <client>
-        <username>root</username>
+        <username>NguyenLan</username>
         <password>password</password>
-        <email>email</email>
+        <email>nigga.com</email>
         <autoLoad>10</autoLoad>
     </client>
     <server>
@@ -26,8 +26,8 @@
         </filter>
         <filter>
             <type>spam</type>
-            <info>nigga, hack, hitler</info>
-            <folder>Project</folder>
+            <info>gay, hack, hitler</info>
+            <folder>Spam</folder>
         </filter>
     </filters>
 </config>

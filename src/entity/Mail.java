@@ -7,12 +7,14 @@ import src.utils.EmailFormatter;
 
 public class Mail {
     private String from;
+    private String id;
     private List<String> to;
     private List<String> cc;
     private List<String> bcc;
     private String subject;
     private String body;
     private List<Attachment> attachments;
+    private boolean isRead = false;
 
     public Mail() {
         this.to = new ArrayList<>();
@@ -22,6 +24,14 @@ public class Mail {
     }
 
     // Getters and Setters
+    public boolean isRead(){
+        return this.isRead;
+    }
+
+    public void setRead(){
+        this.isRead = true;
+    }
+
     public String getFrom() {
         return from;
     }
@@ -32,6 +42,14 @@ public class Mail {
 
     public List<String> getTo() {
         return to;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return this.id;
     }
 
     public void addTo(String recipient) {

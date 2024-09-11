@@ -12,10 +12,10 @@ public class FilterConfig {
     }
 
     FilterType type;
-    List<String> emails;
-    List<String> subjects;
-    List<String> contents;
-    String desFolder;
+    public List<String> emails;
+    public List<String> subjects;
+    public List<String> contents;
+    public String desFolder;
 
     public FilterConfig(FilterType type){
         this.type = type;
