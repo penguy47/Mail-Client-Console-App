@@ -27,7 +27,7 @@ public class GUI {
     JPanel newMailPanel;
     JPanel filterPanel;
 
-    JList<String> folderList;
+    JList<Folder> folderList;
     JList<String> mailList;
     private Map<String, Mail> mailMap = new HashMap<>();
 
@@ -91,12 +91,8 @@ public class GUI {
     }
     
     private void createFolderList(){
-        String[] folderNames = emailController.folders
-            .stream()
-            .map(Folder::getName)
-            .toArray(String[]::new);
-    
-        folderList = new JList<>(folderNames);
+        Folder[] folders = emailController.folders.toArray(new Folder[0]);
+        folderList = new JList<>(folders);
         folderList.setFont(textFont);
         folderList.setPreferredSize(new Dimension(100, 450));
         folderList.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -116,15 +112,8 @@ public class GUI {
     }
 
     private void createMailList(){
-        String folderName = folderList.getSelectedValue();
-        List<Mail> mails = null;
-
-        for (Folder folder : emailController.folders) {
-            if (folder.getName().equals(folderName)) {
-                mails = folder.getMails();
-                break;
-            }
-        }
+        Folder selectedFolder = folderList.getSelectedValue();
+        List<Mail> mails = selectedFolder.getMails();
 
         if (mails == null) {
             mails = Collections.emptyList();
