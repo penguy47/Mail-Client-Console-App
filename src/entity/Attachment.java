@@ -59,9 +59,6 @@ public class Attachment {
 
     @Override
     public String toString() {
-        return "Attachment{" +
-                "file=" + file +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

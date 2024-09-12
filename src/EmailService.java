@@ -8,7 +8,6 @@ import src.connection.POP3Client;
 import src.connection.SMTPClient;
 import src.entity.Attachment;
 import src.entity.Mail;
-import src.entity.User;
 
 public class EmailService {
     private String smtpHost;
