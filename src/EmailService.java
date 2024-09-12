@@ -200,10 +200,64 @@ public class EmailService {
                     };
                 } 
             }
+            pop3Client.disconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public void downloadAttachment(String email, String encodedPassword, int index, String desPath, int[] ifile){
+        try {
+            String line;
+            POP3Client pop3Client = new POP3Client(pop3Host, pop3Port);
+            pop3Client.sendCommand("USER "+email);
+            pop3Client.sendCommand("PASS " + encodedPassword);
+            pop3Client.sendCommand("RETR "+index);
+            int i = 0;
+            int imail = 0;
+            while((line = pop3Client.nextLine())!="."){
+                if(line.startsWith("--boundary--")){
+                    break;
+                } else if(line.startsWith("--boundary_attachment")) {
+                    if(i < ifile.length && ifile[i] == imail){
+                        i++;
+                        pop3Client.nextLine(); // ignore
+                        pop3Client.nextLine(); // ignore
+                        line = pop3Client.nextLine();
+                        String filename = line.substring(line.indexOf("filename=") + 9)
+                                            .replace("\"", "")
+                                            .trim();
+                        pop3Client.nextLine(); // ignore
+                        String encodedString = "";
+                        while((line=pop3Client.nextLine())!=""){
+                            if(line.length()==0) break;
+                            encodedString += line;
+                        }
+                        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+                        File file = new File(desPath + File.separator + filename);
+                        file.getParentFile().mkdirs();
+
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            fos.write(decodedBytes);
+                            fos.flush();
+                        };
+                    } else {
+                        imail++; // IGNORE FILES
+                        pop3Client.nextLine(); // ignore
+                        pop3Client.nextLine(); // ignore
+                        pop3Client.nextLine(); // ignore
+                        pop3Client.nextLine(); // ignore
+                        while((line=pop3Client.nextLine())!=""){
+                            if(line.length()==0) break;
+                        }
+                    }
+                } 
+            }
+            pop3Client.disconnect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
 }

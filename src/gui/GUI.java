@@ -128,7 +128,7 @@ public class GUI {
         mailList.addListSelectionListener((ee) -> {
             if (!ee.getValueIsAdjusting()) {
                 Mail selectedMail = mailList.getSelectedValue();
-                mailDisplayWindow(selectedMail);
+                mailDisplayWindow(selectedMail, mailList.getSelectedIndex()+1);
             }
         });
 
@@ -150,7 +150,7 @@ public class GUI {
         filterPanel.setFocusable(false);
     }
 
-    private void mailDisplayWindow(Mail mail){
+    private void mailDisplayWindow(Mail mail, int indexMail){
         JFrame mailWindow = new JFrame();
         mailWindow.setSize(600,620);
         mailWindow.setTitle(mail.getSubject());
@@ -191,7 +191,9 @@ public class GUI {
         JLabel noteSaveLabel = new JLabel("Hold ctrl and click to choose more");
 
         saveAllrb.setFont(textFont);
+        saveAllrb.setFocusable(false);
         saveSomerb.setFont(textFont);
+        saveSomerb.setFocusable(false);
 
         ButtonGroup group = new ButtonGroup();
         group.add(saveAllrb);
@@ -202,11 +204,41 @@ public class GUI {
         noteSaveLabel.setBounds(250, 540, 230, 30);
 
         JButton downloadb = new JButton("Download");
-
+        downloadb.setFocusable(false);
         downloadb.setBounds(460, 480, 100,30);
 
+        // Event listenrs
+        saveAllrb.addActionListener((e) -> {
+            int itemCount = attachList.getModel().getSize();
+                
+            int[] indices = new int[itemCount];
+            for (int i = 0; i < itemCount; i++) {
+                indices[i] = i;
+            }
+            attachList.setSelectedIndices(indices);
+        });
+
+        saveSomerb.addActionListener((e) -> {
+            attachList.setSelectedIndices(new int[0]);
+        });
+
+        downloadb.addActionListener((e) -> {
+            String desPath = "E:\\Trash";
+            if(saveAllrb.isSelected()){
+                emailController.downloadFiles(indexMail, null, desPath);
+                JOptionPane.showMessageDialog(null, "Downloaded in "+desPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+            } else if(saveSomerb.isSelected()){
+                if(attachList.getSelectedIndices().length == 0){
+                    JOptionPane.showMessageDialog(null, "Please select files", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else emailController.downloadFiles(indexMail, attachList.getSelectedIndices(), desPath);
+                JOptionPane.showMessageDialog(null, "Downloaded in "+desPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select modes", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         // First render
-        saveAllrb.setSelected(true);
         if(attachNames.length == 0) {
             saveAllrb.setEnabled(false);
             saveSomerb.setEnabled(false);

@@ -131,4 +131,12 @@ public class EmailController {
             }
         }
     }
+
+    public void downloadFiles(int iMail, int[] indices, String desPath){
+        if(indices == null){
+            emailService.downloadAttachments(user.email, user.encodedPassword, iMail, desPath);
+        } else {
+            emailService.downloadAttachment(user.email, user.encodedPassword, iMail, desPath, indices);
+        }
+    }
 }
