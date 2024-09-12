@@ -17,7 +17,7 @@ public class MailBoxPanel extends JPanel {
     EmailController emailController;
     Font textFont;
 
-    public MailBoxPanel(Font texFont, EmailController emailController){
+    public MailBoxPanel(EmailController emailController, Font texFont){
         this.textFont = texFont;
         this.emailController = emailController;
         this.setBounds(0, 0, 100, 200);
@@ -38,11 +38,13 @@ public class MailBoxPanel extends JPanel {
         folderList.setFont(textFont);
         folderList.setPreferredSize(new Dimension(100, 450));
         folderList.setBorder(BorderFactory.createLineBorder(Color.black));
+        folderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
         mailList = new JList<>(new Mail[0]);
         mailList.setFont(textFont);
         mailList.setPreferredSize(new Dimension(450, 450));
         mailList.setBorder(BorderFactory.createLineBorder(Color.black));
+        mailList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
         folderList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {

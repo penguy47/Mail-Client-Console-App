@@ -11,7 +11,6 @@ public class GUI {
     JLabel userLabel;
 
     JTabbedPane tabbedPane;
-    JPanel newMailPanel;
     JPanel filterPanel;
 
     Font textFont;
@@ -50,20 +49,13 @@ public class GUI {
         tabbedPane = new JTabbedPane();
         tabbedPane.setBounds(10,30,750,525);
 
-        createNewMailPanel();
         createFilterPanel();
 
-        tabbedPane.addTab("Mail Box", new MailBoxPanel(textFont, emailController));
-        tabbedPane.addTab("Send Mail", newMailPanel);
+        tabbedPane.addTab("Mail Box", new MailBoxPanel(emailController, textFont));
+        tabbedPane.addTab("Send Mail", new NewMailPanel(emailController, textFont));
         tabbedPane.addTab("Filters", filterPanel);
 
         window.add(tabbedPane);
-    }
-
-    private void createNewMailPanel(){
-        newMailPanel = new JPanel();
-        newMailPanel.setBounds(0,0,100,200);
-        newMailPanel.setFocusable(false);
     }
 
     private void createFilterPanel(){
