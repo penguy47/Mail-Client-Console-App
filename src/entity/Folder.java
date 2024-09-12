@@ -53,4 +53,9 @@ public class Folder {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
 }
