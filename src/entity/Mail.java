@@ -147,14 +147,6 @@ public class Mail {
 
     @Override
     public String toString() {
-        return "Mail{" +
-                "from='" + from + '\'' +
-                ", to=" + to +
-                ", cc=" + cc +
-                ", bcc=" + bcc +
-                ", subject='" + subject + '\'' +
-                ", body='" + body + '\'' +
-                ", attachments=" + attachments +
-                '}';
+        return "Subject: " + subject + ", From: " + from;
     }
 }

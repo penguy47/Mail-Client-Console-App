@@ -28,7 +28,7 @@ public class GUI {
     JPanel filterPanel;
 
     JList<Folder> folderList;
-    JList<String> mailList;
+    JList<Mail> mailList;
     private Map<String, Mail> mailMap = new HashMap<>();
 
     Font textFont;
@@ -97,7 +97,7 @@ public class GUI {
         folderList.setPreferredSize(new Dimension(100, 450));
         folderList.setBorder(BorderFactory.createLineBorder(Color.black));
     
-        mailList = new JList<>(new String[] {});
+        mailList = new JList<>(new Mail[0]);
         mailList.setFont(textFont);
         mailList.setPreferredSize(new Dimension(450, 450));
         mailList.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -119,28 +119,16 @@ public class GUI {
             mails = Collections.emptyList();
         }
 
-        String[] mailNames = mails
-                            .stream()
-                            .map(mail -> {
-                                String displayText = mail.getSubject() + " - From: " + mail.getFrom();
-                                mailMap.put(displayText, mail);
-                                return displayText;
-                            })
-                            .toArray(String[]::new);
-
         mailBoxPanel.remove(mailList);
-        mailList = new JList<>(mailNames);
+        mailList = new JList<>(mails.toArray(new Mail[0]));
         mailList.setFont(textFont);
         mailList.setPreferredSize(new Dimension(600, 450));
         mailList.setBorder(BorderFactory.createLineBorder(Color.black));
 
         mailList.addListSelectionListener((ee) -> {
             if (!ee.getValueIsAdjusting()) {
-                String selectedMailText = mailList.getSelectedValue();
-                Mail selectedMail = mailMap.get(selectedMailText);
-                if (selectedMail != null) {
-                    mailDisplayWindow(selectedMail);
-                }
+                Mail selectedMail = mailList.getSelectedValue();
+                mailDisplayWindow(selectedMail);
             }
         });
 
