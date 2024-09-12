@@ -131,6 +131,20 @@ public class Mail {
 
     }
 
+    public String toFullMailString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("From: "+from+"\n")
+            .append("To: "+EmailFormatter.formatToHeader(to).toString()+"\n")
+            .append("Cc: "+EmailFormatter.formatToHeader(cc).toString()+"\n")
+            .append("\n")
+            .append("Subject: " + subject)
+            .append("\n")
+            .append("\n")
+            .append(body + "\n");
+        return builder.toString();
+
+    }
+
     @Override
     public String toString() {
         return "Mail{" +
