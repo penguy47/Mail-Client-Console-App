@@ -224,6 +224,16 @@ public class GUI {
 
         downloadb.addActionListener((e) -> {
             String desPath = "E:\\Trash";
+            if(saveAllrb.isSelected()
+            || (saveSomerb.isSelected() && attachList.getSelectedIndices().length != 0)) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnValue = fileChooser.showOpenDialog(null);
+                if(returnValue == JFileChooser.APPROVE_OPTION){
+                    desPath = fileChooser.getSelectedFile().toPath().toString();
+                }
+            }
+
             if(saveAllrb.isSelected()){
                 emailController.downloadFiles(indexMail, null, desPath);
                 JOptionPane.showMessageDialog(null, "Downloaded in "+desPath, "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -231,8 +241,10 @@ public class GUI {
                 if(attachList.getSelectedIndices().length == 0){
                     JOptionPane.showMessageDialog(null, "Please select files", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                else emailController.downloadFiles(indexMail, attachList.getSelectedIndices(), desPath);
-                JOptionPane.showMessageDialog(null, "Downloaded in "+desPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                else{
+                    emailController.downloadFiles(indexMail, attachList.getSelectedIndices(), desPath);
+                    JOptionPane.showMessageDialog(null, "Downloaded in "+desPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Please select modes", "Error", JOptionPane.ERROR_MESSAGE);
             }
