@@ -1,5 +1,5 @@
 # Run the server
-1. test-mail-server-1.0.jar run with java version 8.
+1. test-mail-server-1.0.jar run with java <b>version 8.</b>
 2. Run the server:
 ```sh
  & 'jre1.8.0_421\bin\java.exe' -jar test-mail-server-1.0.jar -s 2225 -p 3335 -m ./
