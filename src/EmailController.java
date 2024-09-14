@@ -102,6 +102,10 @@ public class EmailController {
         folders.get(0).loadMailsStatusFromFile(filePath);
     }
 
+    public void sendMail(Mail mail){
+        emailService.sendMail(mail); // i dont know :D
+    }
+
     private void loadMailsWithFilters(){
         Map<String, Folder> folderMap = new HashMap<>();
         for(Folder folder : folders){

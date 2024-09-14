@@ -2,7 +2,14 @@ package src.gui;
 
 import javax.swing.*;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import src.EmailController;
+import src.EmailService;
+import src.entity.Attachment;
+import src.entity.Mail;
+import src.utils.EmailFormatter;
 
 import java.awt.*;
 
@@ -31,12 +38,16 @@ public class NewMailPanel extends JPanel {
     JButton submitButton;
     JButton resetButton;
 
+    List<Attachment> attachments;
+
     public NewMailPanel(EmailController emailController, Font texFont){
         this.emailController = emailController;
         this.texFont = texFont;
         this.setBounds(0,0,100,200);
         this.setFocusable(false);
         this.setLayout(null);
+
+        this.attachments = new ArrayList<>();
 
         createLabels();
         createTextField();
@@ -91,16 +102,20 @@ public class NewMailPanel extends JPanel {
         ccTextField.setBounds(110, 50, 600, 28);
         bccTextField.setBounds(110, 80, 600, 28);
         subjectTextField.setBounds(110, 110, 600, 28);
-        attachmentTextField.setBounds(110, 400, 400, 28);
 
         attachmentTextField.setEditable(false);
+
+        JScrollPane scrollPaneAttachmentText = new JScrollPane(attachmentTextField);
+        scrollPaneAttachmentText.setBounds(110, 400, 400, 45);
+        scrollPaneAttachmentText.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPaneAttachmentText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         
 
         this.add(toTextField);
         this.add(ccTextField);
         this.add(bccTextField);
         this.add(subjectTextField);
-        this.add(attachmentTextField);
+        this.add(scrollPaneAttachmentText);
     }
 
     private void createTextArea(){
@@ -126,14 +141,68 @@ public class NewMailPanel extends JPanel {
         fileResetButton.setFocusable(false);
         resetButton.setFocusable(false);
 
-        submitButton.setBounds(300, 440, 88,30);
-        resetButton.setBounds(400, 440, 88,30);
+        submitButton.setBounds(300, 455, 88,30);
+        resetButton.setBounds(400, 455, 88,30);
         fileChooseButton.setBounds(520, 400, 88,30);
         fileResetButton.setBounds(620, 400, 88,30);
+
+        createEventListeners();
 
         this.add(submitButton);
         this.add(resetButton);
         this.add(fileChooseButton);
         this.add(fileResetButton);
+    }
+
+    private void createEventListeners(){
+        resetButton.addActionListener((e) -> {
+            toTextField.setText("");
+            ccTextField.setText("");
+            bccTextField.setText("");
+            subjectTextField.setText("");
+            bodyTextArea.setText("");
+        });
+
+        fileChooseButton.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if(returnValue == JFileChooser.APPROVE_OPTION){
+                attachments.add(new Attachment(fileChooser.getSelectedFile()));
+            } 
+            // re-render attachment text field
+            attachmentTextField.setText("");
+            List<String> attachmentNames = attachments.stream().map((ath) -> {
+                                            return "[" + ath.getName() + "]";
+                                        }).toList();
+
+            attachmentTextField.setText(EmailFormatter.formatToHeader(attachmentNames));
+        });
+
+        fileResetButton.addActionListener((e) -> {
+            attachments.clear();
+            attachmentTextField.setText("");
+        });
+
+        submitButton.addActionListener((e) -> {
+
+            Mail mail = new Mail();
+            mail.setFrom(emailController.user.email);
+            for(String str : toTextField.getText().split(",")){
+                mail.addTo(str.trim());
+            }
+            for(String str : ccTextField.getText().split(",")){
+                mail.addCc(str.trim());
+            }
+            for(String str : bccTextField.getText().split(",")){
+                mail.addBcc(str.trim());
+            }
+            mail.setSubject(subjectTextField.getText());
+            mail.setBody(bodyTextArea.getText());
+            for( Attachment a : attachments){
+                mail.addAttachment(a);
+            }
+
+            emailController.sendMail(mail);
+        });
     }
 }
