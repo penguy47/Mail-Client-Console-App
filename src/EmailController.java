@@ -3,6 +3,7 @@ package src;
 import src.entity.Mail;
 import src.entity.User;
 import src.gui.GUI;
+import src.gui.MailBoxPanel;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import java.lang.Thread;
 
 import src.config.Config;
 import src.config.FilterConfig;
@@ -28,10 +33,26 @@ public class EmailController {
         createFolders();
         createUser();
 
+        // First get mails
         loadAllMails();
-        loadMailsWithFilters();
 
         gui = new GUI(this);
+    }
+
+    public void updateMailThread(MailBoxPanel component){
+        Runnable updateMails = () -> {
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("[Client]: Pulled mails");
+                    loadAllMails();
+                    component.createMailList();
+                }
+            }, 0, this.config.getClientConfig().getTimeRefresh()*1000);
+        };
+
+        new Thread(updateMails).start();
     }
 
     private void createEmailService(){
@@ -69,7 +90,7 @@ public class EmailController {
         return null;
     }
 
-    private void saveMailsStatus(){
+    public void saveMailsStatus(){
         String filePath = ".client\\" + user.username + "\\readMails.txt";
         try (FileWriter writer = new FileWriter(filePath)) {
             for(Mail mail : folders.get(0).getMails()){
@@ -85,6 +106,7 @@ public class EmailController {
 
     private void loadAllMails(){
         int n = (emailService.getMailsCount(user.email, user.encodedPassword));
+        folders.get(0).getMails().clear();
         for(int i=1;i<=n;i++){
             folders.get(0).addMail(
                 emailService.retrieveMail(user.email, user.encodedPassword, i)
@@ -100,6 +122,7 @@ public class EmailController {
         }
 
         folders.get(0).loadMailsStatusFromFile(filePath);
+        loadMailsWithFilters();
     }
 
     public void sendMail(Mail mail){

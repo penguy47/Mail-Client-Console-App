@@ -44,7 +44,7 @@ public class Folder {
             }
             for(Mail mail : mails){
                 for(String id : ids){
-                    if(mail.getId() == id){
+                    if(mail.getId().equals(id)){
                         mail.setRead();
                     }
                 }

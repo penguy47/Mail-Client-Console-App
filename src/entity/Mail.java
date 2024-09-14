@@ -102,7 +102,7 @@ public class Mail {
                     .append("To: " + EmailFormatter.formatToHeader(to).toString()+"\r\n")
                     .append("Cc: "+ EmailFormatter.formatToHeader(cc).toString()+"\r\n")
                     .append("Bcc: "+ EmailFormatter.formatToHeader(bcc).toString()+"\r\n")
-                    .append("Subject: " + subject +".\r\n");
+                    .append("Subject: " + subject +"\r\n");
         return builder.toString();
     }
 
@@ -147,6 +147,6 @@ public class Mail {
 
     @Override
     public String toString() {
-        return "Subject: " + subject + ", From: " + from;
+        return (isRead? "" : "[New] ") + "Subject: " + subject + ", From: " + from;
     }
 }

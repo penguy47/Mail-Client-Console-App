@@ -27,6 +27,8 @@ public class MailBoxPanel extends JPanel {
         createFolderList();
         createMailList();
 
+        emailController.updateMailThread(this);
+
         this.add(folderList);
         this.add(mailList);
 
@@ -55,9 +57,10 @@ public class MailBoxPanel extends JPanel {
         folderList.setSelectedIndex(0);
     }
 
-    private void createMailList(){
+    public void createMailList(){
         Folder selectedFolder = folderList.getSelectedValue();
         List<Mail> mails = selectedFolder.getMails();
+        Collections.reverse(mails);
 
         if (mails == null) {
             mails = Collections.emptyList();
@@ -73,6 +76,8 @@ public class MailBoxPanel extends JPanel {
             if (!ee.getValueIsAdjusting()) {
                 Mail selectedMail = mailList.getSelectedValue();
                 new MailDisplayFrame(emailController, textFont, selectedMail,mailList.getSelectedIndex()+1);
+                selectedMail.setRead();
+                emailController.saveMailsStatus();
             }
         });
 

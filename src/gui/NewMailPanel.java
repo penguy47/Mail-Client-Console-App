@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import src.EmailController;
-import src.EmailService;
 import src.entity.Attachment;
 import src.entity.Mail;
 import src.utils.EmailFormatter;
