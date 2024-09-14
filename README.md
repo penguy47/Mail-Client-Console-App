@@ -8,6 +8,10 @@
 1. This app is written this java 22
 2. Compile and jar packaging
 ```sh
+jar cfm MailClient.jar MANIFEST.MF -C bin  .
+```
+or
+```sh
 &'C:\Program Files\Java\jdk-22\bin\jar.exe' cfm MailClient.jar MANIFEST.MF -C bin  .
 ```
 3. Run client
