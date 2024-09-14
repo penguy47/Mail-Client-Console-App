@@ -130,6 +130,8 @@ public class EmailController {
     }
 
     private void loadMailsWithFilters(){
+        for(int i=1;i<folders.size();i++) folders.get(i).getMails().clear();
+        
         Map<String, Folder> folderMap = new HashMap<>();
         for(Folder folder : folders){
             folderMap.put(folder.getName(), folder);
@@ -141,20 +143,20 @@ public class EmailController {
                     folderMap.get(filterConfig.desFolder).addMail(mail);
                     continue;
                 }
-                boolean isContainsd = false;
+                boolean isContainsed = false;
                 for(String token : filterConfig.subjects){
                     if(mail.getSubject().contains(token)) {
-                        isContainsd = true;
+                        isContainsed = true;
                         break;
                     }
                 }
                 for(String token : filterConfig.contents){
                     if(mail.getBody().contains(token)){
-                        isContainsd = true;
+                        isContainsed = true;
                         break;
                     }
                 }
-                if(isContainsd) folderMap.get(filterConfig.desFolder).addMail(mail);
+                if(isContainsed) folderMap.get(filterConfig.desFolder).addMail(mail);
             }
         }
     }

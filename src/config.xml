@@ -1,8 +1,8 @@
 <config>
     <client>
-        <username>NguyenLan</username>
+        <username>Lan47</username>
         <password>password</password>
-        <email>nigga.com</email>
+        <email>lan47@gmail.com</email>
         <autoLoad>10</autoLoad>
     </client>
     <server>
@@ -14,6 +14,9 @@
         </ports>
     </server>
     <filters>
+        <!-- type: from, subject, content, spam -->
+        <!-- info: keyword relate to type -->
+        <!-- folder: destiny folder -->
         <filter>
             <type>from</type>
             <info>abc@gmail.com</info>
