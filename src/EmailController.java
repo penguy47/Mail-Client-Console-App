@@ -4,6 +4,7 @@ import src.entity.Mail;
 import src.entity.User;
 import src.gui.GUI;
 import src.gui.MailBoxPanel;
+import java.time.LocalDateTime;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,7 +46,16 @@ public class EmailController {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("[Client]: Pulled mails");
+                    LocalDateTime currentTime = LocalDateTime.now();
+                    System.out.println(
+                        "[Client]: [" 
+                        + currentTime.getHour() +":"
+                        + currentTime.getMinute() + ":"
+                        + currentTime.getSecond() + " "
+                        + currentTime.getDayOfMonth() + "/"
+                        + currentTime.getMonthValue() + "/"
+                        + currentTime.getYear()
+                        +"]: refreshed emails");
                     loadAllMails();
                     component.createMailList();
                 }

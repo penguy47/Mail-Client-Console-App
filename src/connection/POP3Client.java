@@ -13,7 +13,7 @@ public class POP3Client {
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         // First res from server
-        System.out.println("[POP3Client]: " + reader.readLine());
+        reader.readLine();
     }
 
     public String sendCommand(String command) throws IOException {
