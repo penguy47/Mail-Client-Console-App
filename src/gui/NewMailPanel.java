@@ -27,6 +27,7 @@ public class NewMailPanel extends JPanel {
     JTextArea bodyTextArea;
 
     JButton fileChooseButton;
+    JButton fileResetButton;
     JButton submitButton;
     JButton resetButton;
 
@@ -90,7 +91,7 @@ public class NewMailPanel extends JPanel {
         ccTextField.setBounds(110, 50, 600, 28);
         bccTextField.setBounds(110, 80, 600, 28);
         subjectTextField.setBounds(110, 110, 600, 28);
-        attachmentTextField.setBounds(110, 400, 500, 28);
+        attachmentTextField.setBounds(110, 400, 400, 28);
 
         attachmentTextField.setEditable(false);
         
@@ -105,28 +106,34 @@ public class NewMailPanel extends JPanel {
     private void createTextArea(){
         bodyTextArea = new JTextArea();
         bodyTextArea.setFont(texFont);
-        bodyTextArea.setBounds(110, 140, 600, 250);
-        bodyTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        
         bodyTextArea.setLineWrap(true);
         bodyTextArea.setWrapStyleWord(true);
-        this.add(bodyTextArea);
+
+        JScrollPane scrollPane = new JScrollPane(bodyTextArea);
+        scrollPane.setBounds(110, 140, 600, 250);
+        this.add(scrollPane);
     }
 
     private void createButton(){
         submitButton = new JButton("Submit");
         fileChooseButton = new JButton("Add file");
+        fileResetButton = new JButton("Empty");
         resetButton = new JButton("Reset");
 
         submitButton.setFocusable(false);
         fileChooseButton.setFocusable(false);
+        fileResetButton.setFocusable(false);
         resetButton.setFocusable(false);
 
         submitButton.setBounds(300, 440, 88,30);
         resetButton.setBounds(400, 440, 88,30);
-        fileChooseButton.setBounds(620, 400, 88,30);
+        fileChooseButton.setBounds(520, 400, 88,30);
+        fileResetButton.setBounds(620, 400, 88,30);
 
         this.add(submitButton);
         this.add(resetButton);
         this.add(fileChooseButton);
+        this.add(fileResetButton);
     }
 }
