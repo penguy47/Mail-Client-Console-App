@@ -1,3 +1,6 @@
+# IDE
+Visual Studio Code
+
 # Run the server
 1. test-mail-server-1.0.jar run with java <b>version 8.</b>
 2. Run the server:
