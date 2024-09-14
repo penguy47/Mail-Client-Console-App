@@ -16,5 +16,5 @@ or
 ```
 3. Run client
 ```sh
-java -jar MailClient ./
+java -jar MailClient.jar ./
 ```
